@@ -8,7 +8,6 @@
     <title>PlantCare AI - Plant Disease Detection</title>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -89,9 +88,6 @@
             background: #15552d;
         }
 
-
-        /* Detection Results */
-
         .result-box {
             margin-top: 30px;
             padding: 25px;
@@ -159,18 +155,13 @@
             color: #6b756e;
         }
 
-
         .info {
             margin-top: 30px;
             font-size: 15px;
             color: #6b756e;
         }
 
-
-        /* Mobile */
-
         @media (max-width: 600px) {
-
             .container {
                 margin: 30px auto;
                 padding: 15px;
@@ -199,13 +190,10 @@
             .prediction-header strong {
                 padding-right: 15px;
             }
-
         }
-
     </style>
 
 </head>
-
 
 <body>
 
@@ -235,31 +223,79 @@
         <div class="upload-box">
 
             <h2>📷 Upload Leaf Image</h2>
-            <label for="plant" style="display: block; margin-bottom: 10px; font-weight: bold;">
-    🌿 Select Plant
-</label>
 
-<select name="plant" id="plant" required
-        style="padding: 12px; width: 100%; max-width: 400px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
 
-    <option value="">-- Select Plant --</option>
-    <option value="Apple">🍎 Apple</option>
-    <option value="Blueberry">🫐 Blueberry</option>
-    <option value="Cherry">🍒 Cherry</option>
-    <option value="Corn">🌽 Corn</option>
-    <option value="Grape">🍇 Grape</option>
-    <option value="Peach">🍑 Peach</option>
-    <option value="Pepper">🌶️ Pepper</option>
-    <option value="Potato">🥔 Potato</option>
-    <option value="Strawberry">🍓 Strawberry</option>
-    <option value="Tomato">🍅 Tomato</option>
-
-</select>
-
+            <!-- FORM START -->
 
             <form method="POST" enctype="multipart/form-data">
 
                 {% csrf_token %}
+
+
+                <!-- PLANT SELECTION -->
+
+                <label for="plant"
+                    style="display: block; margin-bottom: 10px; font-weight: bold;">
+
+                    🌿 Select Plant
+
+                </label>
+
+
+                <select
+                    name="plant"
+                    id="plant"
+                    required
+                    style="padding: 12px; width: 100%; max-width: 400px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
+
+                    <option value="">
+                        -- Select Plant --
+                    </option>
+
+                    <option value="Apple">
+                        🍎 Apple
+                    </option>
+
+                    <option value="Blueberry">
+                        🫐 Blueberry
+                    </option>
+
+                    <option value="Cherry">
+                        🍒 Cherry
+                    </option>
+
+                    <option value="Corn">
+                        🌽 Corn
+                    </option>
+
+                    <option value="Grape">
+                        🍇 Grape
+                    </option>
+
+                    <option value="Peach">
+                        🍑 Peach
+                    </option>
+
+                    <option value="Pepper">
+                        🌶️ Pepper
+                    </option>
+
+                    <option value="Potato">
+                        🥔 Potato
+                    </option>
+
+                    <option value="Strawberry">
+                        🍓 Strawberry
+                    </option>
+
+                    <option value="Tomato">
+                        🍅 Tomato
+                    </option>
+
+                </select>
+
+
+                <!-- IMAGE UPLOAD -->
 
                 <input
                     type="file"
@@ -268,61 +304,80 @@
                     required
                 >
 
-                <button type="submit" class="detect-btn">
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="detect-btn">
+
                     🔍 Detect Disease
+
                 </button>
 
             </form>
 
+            <!-- FORM END -->
 
-           {% if predictions %}
 
-    <div class="result-box">
+            <!-- RESULTS -->
 
-        <h2>🌱 Detection Results</h2>
+            {% if predictions %}
 
-        {% for result in predictions %}
+            <div class="result-box">
 
-            <div class="prediction-card">
+                <h2>🌱 Detection Results</h2>
 
-                <div class="prediction-header">
 
-                    <strong>
-                        {{ forloop.counter }}. {{ result.label }}
-                    </strong>
+                {% for result in predictions %}
 
-                    <span>
-                        {{ result.score }}%
-                    </span>
+                <div class="prediction-card">
+
+                    <div class="prediction-header">
+
+                        <strong>
+                            {{ forloop.counter }}. {{ result.label }}
+                        </strong>
+
+                        <span>
+                            {{ result.score }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="confidence-bar">
+
+                        <div
+                            class="confidence-fill"
+                            style="width: {{ result.score }}%;">
+                        </div>
+
+                    </div>
+
+
+                    <small>
+                        AI Confidence
+                    </small>
 
                 </div>
 
-                <div class="confidence-bar">
-                    <div class="confidence-fill"></div>
-                </div>
-
-                <small>
-                    AI Confidence
-                </small>
+                {% endfor %}
 
             </div>
 
-        {% endfor %}
-
-    </div>
-
-{% endif %}
-
+            {% endif %}
 
         </div>
 
 
         <div class="info">
+
             Supported formats: JPG, JPEG, PNG
+
         </div>
 
     </main>
-
 
 </body>
 
