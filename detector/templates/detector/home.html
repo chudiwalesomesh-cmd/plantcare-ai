@@ -63,6 +63,16 @@
             margin-bottom: 25px;
         }
 
+        .plant-select {
+            padding: 12px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
         input[type="file"] {
             margin: 20px 0;
             padding: 12px;
@@ -225,7 +235,7 @@
             <h2>📷 Upload Leaf Image</h2>
 
 
-            <!-- FORM START -->
+            <!-- FORM -->
 
             <form method="POST" enctype="multipart/form-data">
 
@@ -234,7 +244,8 @@
 
                 <!-- PLANT SELECTION -->
 
-                <label for="plant"
+                <label
+                    for="plant"
                     style="display: block; margin-bottom: 10px; font-weight: bold;">
 
                     🌿 Select Plant
@@ -245,8 +256,8 @@
                 <select
                     name="plant"
                     id="plant"
-                    required
-                    style="padding: 12px; width: 100%; max-width: 400px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
+                    class="plant-select"
+                    required>
 
                     <option value="">
                         -- Select Plant --
@@ -301,11 +312,10 @@
                     type="file"
                     name="leaf_image"
                     accept="image/*"
-                    required
-                >
+                    required>
 
 
-                <!-- BUTTON -->
+                <!-- DETECT BUTTON -->
 
                 <button
                     type="submit"
@@ -317,10 +327,8 @@
 
             </form>
 
-            <!-- FORM END -->
 
-
-            <!-- RESULTS -->
+            <!-- DETECTION RESULTS -->
 
             {% if predictions %}
 
@@ -346,11 +354,13 @@
                     </div>
 
 
+                    <!-- CONFIDENCE BAR -->
+
                     <div class="confidence-bar">
 
                         <div
                             class="confidence-fill"
-                            style="width: {{ result.score }}%;">
+                            data-score="{{ result.score }}">
                         </div>
 
                     </div>
@@ -378,6 +388,29 @@
         </div>
 
     </main>
+
+
+    <!-- CONFIDENCE BAR SCRIPT -->
+
+    <script>
+
+        document
+            .querySelectorAll(".confidence-fill")
+            .forEach(function (bar) {
+
+                const score = parseFloat(
+                    bar.dataset.score
+                );
+
+                if (!isNaN(score)) {
+
+                    bar.style.width = score + "%";
+
+                }
+
+            });
+
+    </script>
 
 </body>
 
